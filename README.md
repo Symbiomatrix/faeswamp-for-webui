@@ -13,7 +13,7 @@ Some of the gradio bits were templated from other extensions.
 - Gpu friendly: Native support for batch running (via insightful, and base model is modified at runtime to allow it).
   Meaning, it should be very fast with a recent gpu. Only tested with nvidia.
 - Control over source / target selection (either single or multiple targets).
-- Fine grain control over video split & merge: codecs, quality, input / output framerate, rotation, padding.
+- Fine grained control over video split & merge: codecs, quality, input / output framerate, rotation, padding.
   Some settings have automatic values as -1.
 - Settings to control model directories, filename to some extent.
 - Automatically unloads models optionally once the processing is complete. Not sure whether the vram is freed though.
