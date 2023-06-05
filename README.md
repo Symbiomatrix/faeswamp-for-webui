@@ -1,7 +1,9 @@
 ## FaeSwamp for webui
 
 Creates a tab which allows running a certain onnx model to process an image, video or multiple images efficiently.
+
 Based on onnx through [insightface V0.7](https://github.com/deepinsight/insightface), but does not have the latter as a requirement.
+
 Some of the gradio bits were templated from other extensions.
 
 ### Features:
