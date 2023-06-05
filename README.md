@@ -10,8 +10,8 @@ Some of the gradio bits were templated from other extensions.
 
 - Runs on single image, video, directory = select images (though gradio's interface is rather clunky).
   A gif can be placed in directory and will be treated as a video (YMMV, works on my end).
-- Gpu friendly: Native support for batch running (via insightful, and base model is modified at runtime to allow it).
-  Meaning, it should be very fast with a recent gpu. Only tested with nvidia.
+- Gpu friendly: Native support for batch processing (via insightful, and base model is modified at runtime to allow it).
+  Meaning, it should be very fast with a recent gpu and high batchnum. Only tested with nvidia.
 - Control over source / target selection (either single or multiple targets).
 - Fine grained control over video split & merge: codecs, quality, input / output framerate, rotation, padding.
   Some settings have automatic values as -1.
