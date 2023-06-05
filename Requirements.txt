@@ -1,0 +1,3 @@
+opencv-python
+onnx==1.14.0
+onnxruntime-gpu==1.15.0
