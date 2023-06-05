@@ -26,7 +26,7 @@ Requires onnx, onnxruntime (gpu), opencv, and two onnx models.
 
 ### What models?
 
-Find them yourself. Consider it gatekeeping.
+BATTERIES NOT INCLUDED. Find them yourself. Consider it gatekeeping.
 
 ### DISCLAIMER
 
