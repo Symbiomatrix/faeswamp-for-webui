@@ -19,6 +19,7 @@ Some of the gradio bits were templated from other extensions.
 - Automatically unloads models optionally once the processing is complete. Not sure whether the vram is freed though.
 - Not too painful to install: Other than onnx (which seems to require [visual cpp 2019 runtime on windows](https://onnxruntime.ai/docs/install/#requirements)), no building wheels or getting devkits. Hopefully. Untested.
 - Localised what I could find.
+- Gui hanging on errors, obviously intentional cus you've earned it.
 
 ### Install
 
