@@ -365,6 +365,7 @@ def process_video(source_img, target_vid, sidx = 0, tidx = -1, loadsize = 40, ba
     dparms = DEFMRG.copy()
     dparms.update({k:v for (k,v) in kwargs.items() if k in MERGEPARMS})
     cmd = FMMERGE.format(**dparms)
+    os.makedirs(dparms["outfile"], exist_ok = True)
     vret = os.system(cmd)
     if vret != 0:
         raise ValueError("Could not merge video from frames.")
