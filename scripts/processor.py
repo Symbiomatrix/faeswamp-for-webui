@@ -330,16 +330,16 @@ def process_video(source_img, target_vid, sidx = 0, tidx = -1, loadsize = 40, ba
     if "frmfmt" not in kwargs:
         kwargs["frmfmt"] = FMTFRAME.format(kwargs["frmcnt"])
     # Filters.
-    if kwargs.get("transpose", None) is None:
-        kwargs["transpose"] = ""
-    else:
+    if defnullneg(kwargs, "transpose", False):
         ltrans = [FMTTRANS.format(transpose = vdir) for vdir in kwargs["transpose"]]
         strans = ", ".join(ltrans)
         kwargs["transpose"] = FMTFILTERS.format(multifilter = strans)
-    
-    kwargs["pad"] = defnullneg(kwargs, "pad", False)
-    if kwargs["pad"]:
+    else:
+        kwargs["transpose"] = ""
+    if defnullneg(kwargs, "pad", False):
         kwargs["pad"] = FMTFILTERS.format(multifilter = FMTPAD)
+    else:
+        kwargs["pad"] = ""
     
     # Variable according to source.
     # Generally seems framerate = videorate is best.
