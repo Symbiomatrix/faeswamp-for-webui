@@ -53,11 +53,11 @@ INDLOAD = True # Load models on first call.
 def tab_router(selected_tab, inpimg, inptrg, inpvid, inpdir, sidx, tidx, *args):
     """Select processing method depending on current tab.
     
-    Spam.
+    Dir has a workaround for animated gifs and multiple videos (which gradio handles poorly in general).
     """
     global INDLOAD
     try:
-        [batchsizev, codec, quality, videorate, framerate, transpose, batchsized, pad] = args
+        [batchsizev, codec, quality, videorate, framerate, transpose, pad, batchsized] = args
         transpose = DTRANS[transpose]
         indunload = fseti("unload")
         if INDLOAD:
@@ -68,24 +68,37 @@ def tab_router(selected_tab, inpimg, inptrg, inpvid, inpdir, sidx, tidx, *args):
             except NotImplementedError: # If not, try to fix the base.
                 processor.load_models(fseti("dirbuffalo"),fseti("dirswamp"))
             INDLOAD = False
+        # Make dictionary for parms to avoid copypasta.
+        dvid = {'sidx': sidx,
+                'tidx': tidx,
+                'loadsize': fseti("loadsize"),
+                'batchsize': batchsizev,
+                'dirtemp': fseti("dirtemp"),
+                'qv': fseti("qv"),
+                'frmcnt': fseti("maxframe"),
+                'preset': codec,
+                'outfile': os.path.join(fseti("dirout"), fseti("outfile")),
+                'videorate': videorate,
+                'framerate': framerate,
+                'transpose': transpose,
+                'quality': quality,
+                'pad': pad,
+            }
         if selected_tab == "Image":
             vout = processor.process_img(inpimg, inptrg, sidx = sidx, tidx = tidx)
             vret = [vout, None]
         elif selected_tab == "Video":
-            vout = processor.process_video(inpimg, inpvid, sidx = sidx, tidx = tidx,
-                                           loadsize = fseti("loadsize"), batchsize = batchsizev,
-                                           dirtemp = fseti("dirtemp"), qv = fseti("qv"),
-                                           frmcnt = fseti("maxframe"), preset = codec,
-                                           outfile = os.path.join(fseti("dirout"), fseti("outfile")),
-                                           videorate = videorate, framerate = framerate,
-                                           transpose = transpose, quality = quality, pad = pad)
+            vout = processor.process_video(inpimg, inpvid, **dvid)
             vret = [None, vout]
         elif selected_tab == "Directory":
             # File component returns tempfile._TemporaryFileWrapper objects.
             # I dunno how to pass their io.bufferedrandom to cv, so just using the names.
             # This seems to be the only way to pass around animated gifs, so that's what I'm using.
             # Sucks that video parms aren't present in this tab, but whatever.
+            dvid["batchsize"] = batchsized # Switch to dir mode's batchsize for convenience.
             inpdir = [f.name for f in inpdir]
+            inpdvid = [f for f in inpdir if processor.fisvid(f)]
+            inpdimg = [f for f in inpdir if not processor.fisvid(f)]
             if len(inpdir) == 1 and processor.fisgif(inpdir[0]): # Gif mode.
                 vout = processor.process_video(inpimg, inpdir[0], sidx = sidx, tidx = tidx,
                                                loadsize = fseti("loadsize"), batchsize = batchsizev,
@@ -95,11 +108,13 @@ def tab_router(selected_tab, inpimg, inptrg, inpvid, inpdir, sidx, tidx, *args):
                                                videorate = videorate, framerate = framerate,
                                                transpose = transpose, quality = quality, pad = pad)
                 vret = [None, vout]
-            else:
-                vout = processor.process_frames(inpimg, inpdir, sidx = sidx, tidx = tidx,
+            elif len(inpdimg) > 0: # Single images processed and added to gallery.
+                vout = processor.process_frames(inpimg, inpdimg, sidx = sidx, tidx = tidx,
                                                 loadsize = fseti("loadsize"), batchsize = batchsized,
                                                 dirsave = fseti("dirout"))
                 vret = [vout, None]
+            for ivid in inpdvid: # Videos are processed but not displayed.
+                vout = processor.process_video(inpimg, ivid, **dvid)
         else:
             print("Wrong mode.")
             vret = [None, None]
