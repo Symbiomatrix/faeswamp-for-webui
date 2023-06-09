@@ -359,7 +359,7 @@ def process_video(source_img, target_vid, sidx = 0, tidx = -1, loadsize = 40, ba
         cmd = FMSPLIT.format(**dparms)
     vret = os.system(cmd)
     if vret != 0:
-        raise ValueError("Could not split video to frames.")
+        raise ValueError("Could not split video to frames. {}".format(cmd))
     # Process the frames.
     process_frames(source_img, dirtemp, sidx, tidx, loadsize, batchsize, dirsave = dirtout, indret = False)
     kwargs["frmpath"] = dirtout
@@ -370,7 +370,7 @@ def process_video(source_img, target_vid, sidx = 0, tidx = -1, loadsize = 40, ba
     os.makedirs(os.path.dirname(dparms["outfile"]), exist_ok = True)
     vret = os.system(cmd)
     if vret != 0:
-        raise ValueError("Could not merge video from frames.")
+        raise ValueError("Could not merge video from frames. {}".format(cmd))
     if inddel: # Delete frames + out optionally.
         # Creep: Should delete frmfmt files rather than assume format,
         # but ffmpeg's format is different from glob's.
