@@ -95,6 +95,7 @@ def tab_router(selected_tab, inpimg, inptrg, inpvid, inpdir, sidx, tidx, *args):
             # I dunno how to pass their io.bufferedrandom to cv, so just using the names.
             # This seems to be the only way to pass around animated gifs, so that's what I'm using.
             # Sucks that video parms aren't present in this tab, but whatever.
+            vret = [None, None]
             dvid["batchsize"] = batchsized # Switch to dir mode's batchsize for convenience.
             inpdir = [f.name for f in inpdir]
             inpdvid = [f for f in inpdir if processor.fisvid(f)]
