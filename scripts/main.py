@@ -100,13 +100,7 @@ def tab_router(selected_tab, inpimg, inptrg, inpvid, inpdir, sidx, tidx, *args):
             inpdvid = [f for f in inpdir if processor.fisvid(f)]
             inpdimg = [f for f in inpdir if not processor.fisvid(f)]
             if len(inpdir) == 1 and processor.fisgif(inpdir[0]): # Gif mode.
-                vout = processor.process_video(inpimg, inpdir[0], sidx = sidx, tidx = tidx,
-                                               loadsize = fseti("loadsize"), batchsize = batchsizev,
-                                               dirtemp = fseti("dirtemp"), qv = fseti("qv"),
-                                               frmcnt = fseti("maxframe"), preset = codec,
-                                               outfile = os.path.join(fseti("dirout"), fseti("outfile")),
-                                               videorate = videorate, framerate = framerate,
-                                               transpose = transpose, quality = quality, pad = pad)
+                vout = processor.process_video(inpimg, inpdir[0], **dvid)
                 vret = [None, vout]
             elif len(inpdimg) > 0: # Single images processed and added to gallery.
                 vout = processor.process_frames(inpimg, inpdimg, sidx = sidx, tidx = tidx,
