@@ -134,6 +134,8 @@ def listpick(l, idx):
         return [l]
     
 fisgif = lambda x: "gif" in os.path.splitext(x)[-1].lower()
+VIDEXT = [".mp4", ".mkv", ".mov"]
+fisvid = lambda x: os.path.splitext(x)[-1].lower() in VIDEXT
 
 def delete_frames(vdir, frmcnt = FRAMECNTDEF):
     """Delete all jpgs from folder.
